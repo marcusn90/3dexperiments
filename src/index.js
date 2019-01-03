@@ -107,6 +107,18 @@ function create_box(s) {
   scene.add(c)
 }
 
+function add_helper_text() {
+  const p = document.createElement('p');
+  p.textContent = '[hint: type numbers from keyboard to see animation]';
+  p.style.position = 'absolute';
+  p.style.top = '20px';
+  p.style.left = '20px';
+  p.style.color = '#fff';
+  p.style.fontFamily = 'monospace';
+
+  document.body.append(p);
+}
+
 function init() {
   setup_scene();
   setup_camera();
@@ -131,6 +143,7 @@ function init() {
   // scene.add(c1)
 
   scene.add(matrix.create());
+  add_helper_text();
 }
 
 function update() {

@@ -6,12 +6,12 @@ const matrix_obj = new THREE.Object3D();
 const matrix_size = 9;
 const matrix_color = '#198';
 const cube_size = 20;
-const anim_step = 2;
+const anim_step = 1;
 const distance = cube_size / 5;
 
 let scene;
 let current_animation = null;
-let keys_pressed = [];
+let keys_pressed = [9,8,7,6,5,4,3,2,1];
 
 matrix_obj.userData.cubes = [];
 
