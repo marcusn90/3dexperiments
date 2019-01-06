@@ -6,7 +6,7 @@ import World from './world';
 
 import matrix from './matrix';
 
-let scene, camera, renderer, controls, cube, butterly, planet, plane, normals = [];
+let scene, camera, camera2, renderer, controls, cube, butterly, planet, plane, normals = [];
 
 function setup_scene() {
   scene = new THREE.Scene();
@@ -15,8 +15,13 @@ function setup_scene() {
 
 function setup_camera() {
   camera = new THREE.PerspectiveCamera(75, World.RATIO, 1, 4001);
+  
   camera.position.set(360,100,400);
   camera.lookAt(0, 0, 0);
+  // camera2 = new THREE.PerspectiveCamera(75, World.RATIO, 1, 4001);
+  
+  // camera2.position.set(-360,100,400);
+  // camera2.lookAt(0, 0, 0);
 }
 
 function setup_renderer() {
@@ -28,6 +33,8 @@ function setup_renderer() {
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
 
+  // renderer.autoClear = false; // to have 2 viewports
+
   document.body.appendChild(renderer.domElement);
   document.body.style.margin = 0;
   document.body.style.padding = 0;
@@ -35,6 +42,7 @@ function setup_renderer() {
 
 function orbit_controls() {
   controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // const controls2 = new THREE.OrbitControls(camera2, renderer.domElement);
 }
 
 function axes_helper() {
@@ -153,7 +161,19 @@ function update() {
 
 function main_loop() {
   update();
+  // renderer.clear();
   renderer.render(scene, camera);
+
+  // renderer.setViewport(0,0,World.WIDTH/2,World.HEIGHT);
+  // renderer.setScissor(0,0,World.WIDTH/2,World.HEIGHT);
+  // renderer.setScissorTest(true);
+  // renderer.render(scene, camera);
+
+  // renderer.setViewport(World.WIDTH/2,0,World.WIDTH,World.HEIGHT);
+  // renderer.setScissor(World.WIDTH/2,0,World.WIDTH,World.HEIGHT);
+  // renderer.setScissorTest(true);
+  // renderer.render(scene, camera2);
+
   requestAnimationFrame(main_loop);
 }
 

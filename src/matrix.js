@@ -4,9 +4,9 @@ import numbers from './numbers';
 
 const matrix_obj = new THREE.Object3D();
 const matrix_size = 9;
-const matrix_color = '#198';
-const cube_size = 20;
-const anim_step = 1;
+const matrix_color = '#f11';
+const cube_size = 30;
+const anim_step = 0.1;
 const distance = cube_size / 5;
 
 let scene;
@@ -24,6 +24,7 @@ export function create_cube(s) {
   // const m = new THREE.MeshBasicMaterial({
   const m = new THREE.MeshStandardMaterial({
     side: THREE.FrontSide,
+    // wireframe: true
   });
   const c = new THREE.Mesh(g, m);
   c.castShadow = true;
@@ -59,10 +60,10 @@ function is_complete(animated, to) {
 
   for (let i = 0; i < matrix_size; i++) {
     for (let j = 0; j < matrix_size; j++) {
-      if (animated[i][j] && cubes[i][j].position.z != to.z) {
+      if (animated[i][j] && cubes[i][j].scale.z != to.z/cubes[i][j].geometry.parameters.width) {
         return false;
       }
-      if (!animated[i][j] && cubes[i][j].position.z != 0) {
+      if (!animated[i][j] && cubes[i][j].scale.z != 1) {
         return false;
       }
     }
@@ -78,11 +79,12 @@ function animate_matrix(animated, to) {
     for (let j = 0; j < matrix_size; j++) {
       const cube = cubes[i][j];
       if (animated[i][j]) {
-        cube.position.z = Math.min(to.z, cube.position.z + anim_step);
+        cube.scale.z = Math.min(to.z/cube.geometry.parameters.width, cube.scale.z + anim_step);
       } else {
-        cube.position.z = Math.max(0, cube.position.z - anim_step)
+        cube.scale.z = Math.max(1, cube.scale.z - anim_step)
       }
-      cube.material.color = new THREE.Color(matrix_color).lerp(new THREE.Color('#649'), cube.position.z / to.z);
+      cube.material.color = new THREE.Color('#22e').lerp(new THREE.Color(matrix_color), 1 / cube.scale.z);
+      cube.position.z = cube.geometry.parameters.width * cube.scale.z / 2;
     }
   }
 
@@ -95,7 +97,7 @@ function animate_number(num) {
     if (!animated) {
       return;
     }
-    const to = new THREE.Vector3(0, 0, 50);
+    const to = new THREE.Vector3(0, 0, 100);
     let complete = animate_matrix(animated, to);
     if (complete) {
       current_animation = null;
